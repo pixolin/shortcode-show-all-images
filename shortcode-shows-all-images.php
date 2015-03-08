@@ -31,10 +31,10 @@ Domain Path: languages
 // Don't allow direct access to this file
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SSAI_PATH', plugin_dir_path(__FILE__) );
+define( 'SSAI_PATH', plugin_dir_path( __FILE__ ) );
 
 // Prepare for i18n
-load_plugin_textdomain('ssai', false, basename( dirname( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain( 'ssai', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 // Require file with main class
 require SSAI_PATH . 'ssai-class.php';

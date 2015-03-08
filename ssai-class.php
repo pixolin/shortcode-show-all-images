@@ -18,23 +18,35 @@ class SSAI_class {
 	function ssai_query( $atts ) {
 		$out = ''; //we start with empty output
 
-		// now let's handle the shortcode attributes
+		/*
+		* here we handle the shortcode attributes
+		* if none was provided, fall back to 'medium'
+		*/
 		$atts = shortcode_atts(
-			array( 'size' => 'medium' ),
+			array(
+				'size'    => 'medium',
+				'exclude' => '' ),
 			$atts,
 			'ssai' );
 
-		// fetch all attachments
+		$exclude = explode(",", $atts['exclude']);
+
+		/*
+		* here we fetch all attachments
+		* Need to exclude certain images?
+		* Shortcode attribute "exclude" handles that
+		*/
 		$args = array(
 	    'post_type' => 'attachment',
 	    'numberposts' => -1,
+	    'exclude' => $exclude,
 	    'post_mime_type' => 'image/jpeg',
 	    'post_status' => null,
 	    'post_parent' => null );
 		$all_attachments = get_posts( $args );
 
 		// start with output
-		$out .= '<ul style="list-style-type:none">';
+		$out .= '<div class="saai"><ul style="list-style-type:none">';
 
 		// Loop through all attachments and fetch the right image size
     foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
@@ -51,7 +63,7 @@ class SSAI_class {
 		endforeach;
 		wp_reset_postdata();
 
-		$out .= '</ul>';
+		$out .= '</ul></div>';
 		return $out;
 	}
 
