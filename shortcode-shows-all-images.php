@@ -6,8 +6,8 @@ Author: Bego Mario Garde
 Author URI: https://garde-medienberatung.de
 Version: 0.1.0
 License: GPL2
-Text Domain: pix-all-images
-Domain Path: languages
+Text Domain: ssai
+Domain Path: /languages/
 */
 
 /*
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'SSAI_PATH', plugin_dir_path( __FILE__ ) );
 
 // Prepare for i18n
-load_plugin_textdomain( 'ssai', false, basename( dirname( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain( 'ssai', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 
 // Require file with main class
 require SSAI_PATH . 'ssai-class.php';

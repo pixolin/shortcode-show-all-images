@@ -10,7 +10,7 @@ The *size* can be set by using the shortcode attribute "size":
 You may also exclude images (like a logo file that you also uploaded to the media library but don't want to show in the list of images) by their ID's. (Hint: to find the ID, simply hover over the images in the media library and look at the link that is shown at the bottom of your browser.) The attribute is "exclude":
 `[ssai exclude="7, 22, 32"]`
 
-It may come to no surprise that you can combine the attributes, e.g.
+It may not surprise you that you can combine the attributes, e.g.
 `[ssai size="thumbnail" exclude="7, 22, 32"]`
 
 To style the List with images, the unsorted is wrapped in a `<div class="ssai">`.
