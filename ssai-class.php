@@ -20,8 +20,10 @@ class SSAI_class {
 
 		/*
 		* here we handle the shortcode attributes
-		* if none was provided, fall back to 'medium'
+		* first we sanitize the attributes,
+		* then, if none was provided, fall back to 'medium'
 		*/
+		$atts = array_map( 'wp_kses_post', $atts );
 		$atts = shortcode_atts(
 			array(
 				'size'    => 'medium',
@@ -40,30 +42,33 @@ class SSAI_class {
 	    'post_type' => 'attachment',
 	    'numberposts' => -1,
 	    'exclude' => $exclude,
-	    'post_mime_type' => 'image/jpeg',
+	    'post_mime_type' => 'image',
 	    'post_status' => null,
 	    'post_parent' => null );
 		$all_attachments = get_posts( $args );
 
-		// start with output
-		$out .= '<div class="saai"><ul style="list-style-type:none">';
+		if( $all_attachments ) {
+			// start with output
+			$out .= '<div class="saai"><ul style="list-style-type:none">';
 
-		// Loop through all attachments and fetch the right image size
-    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
+			// Loop through all attachments and fetch the right image size
+	    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
 
-    $out .= '<li>';
-		$out .= wp_get_attachment_image(
-			         $attachment->ID,
-			         $atts['size'], // attribute passed to the shortcode
-			         false,
-			         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
-			      );
-		$out .= '</li>';
+	    $out .= '<li>';
+			$out .= wp_get_attachment_image(
+				         $attachment->ID,
+				         $atts['size'], // attribute passed to the shortcode
+				         false,
+				         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
+				      );
+			$out .= '</li>';
 
-		endforeach;
-		wp_reset_postdata();
+			endforeach;
+			wp_reset_postdata();
 
-		$out .= '</ul></div>';
+			$out .= '</ul></div>';
+		} // if( $all_attachments )
+
 		return $out;
 	}
 
