@@ -55,8 +55,6 @@ class SSAI_class {
 
 		// explode the array and append to our $atts
 		$atts['ids']     = implode( ',', $attachmentIDs );
-		$atts['columns'] = $atts['columns'];
-		$atts['size']    = $atts['size'];
 
 		// use the native wordpress gallery shortcode with our altered $atts
 		return gallery_shortcode( $atts );
