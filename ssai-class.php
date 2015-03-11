@@ -23,11 +23,22 @@ class SSAI_class {
 		* first we sanitize the attributes,
 		* then, if none was provided, fall back to 'medium'
 		*/
+
+		// validate $atts['columns']
+		$validcolumns = array( 1,2,3,4,5 );
+		if( isset($atts['columns']) && !in_array($atts['columns'], $validcolumns) ) {
+			$atts['columns'] = 2;
+		}
+		// sanitize attributes
 		$atts = array_map( 'wp_kses_post', $atts );
+
+		// set default values
 		$atts = shortcode_atts(
 			array(
 				'size'    => 'medium',
-				'exclude' => '' ),
+				'exclude' => '',
+				'columns' => 2
+				),
 			$atts,
 			'ssai' );
 
@@ -48,25 +59,54 @@ class SSAI_class {
 		$all_attachments = get_posts( $args );
 
 		if( $all_attachments ) {
-			// start with output
-			$out .= '<div class="saai"><ul style="list-style-type:none">';
 
-			// Loop through all attachments and fetch the right image size
-	    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
+			if( current_theme_supports( 'html5' ) ) {
+				// start with output
+				$out .= '<div class="gallery gallery-columns-'.$atts['columns'].' gallery-size-'.$atts['size'].'">';
 
-	    $out .= '<li>';
-			$out .= wp_get_attachment_image(
-				         $attachment->ID,
-				         $atts['size'], // attribute passed to the shortcode
-				         false,
-				         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
-				      );
-			$out .= '</li>';
+				// Loop through all attachments and fetch the right image size
+		    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
 
-			endforeach;
-			wp_reset_postdata();
+		    $out .= '<figure class="gallery-item">';
+		    $out .= '<div class="gallery-icon"';
+		    $out .= '<a href="'. site_url() .'/?attachment_id='. $attachment->ID.'">';
+				$out .= wp_get_attachment_image(
+					         $attachment->ID,
+					         $atts['size'], // attribute passed to the shortcode
+					         false,
+					         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
+					      );
+				$out .= '</a></div></figure>';
 
-			$out .= '</ul></div>';
+
+				endforeach;
+				wp_reset_postdata();
+
+			} else {
+
+				$out .= '<div class="gallery gallery-columns-'.$atts['columns'].' gallery-size-'.$atts['size'].'">';
+
+				// Loop through all attachments and fetch the right image size
+		    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
+
+		    $out .= '<dl class="gallery-item">';
+		    $out .= '<dt class="gallery-icon">';
+		    $out .= '<a href="'. site_url() .'/?attachment_id='. $attachment->ID.'">';
+				$out .= wp_get_attachment_image(
+					         $attachment->ID,
+					         $atts['size'], // attribute passed to the shortcode
+					         false,
+					         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
+					      );
+				$out .= '</a></dt></dl>';
+
+				endforeach;
+				wp_reset_postdata();
+
+			}
+
+			$out .= '</div>';
+
 		} // if( $all_attachments )
 
 		return $out;
