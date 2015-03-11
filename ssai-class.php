@@ -16,7 +16,6 @@ class SSAI_class {
 
 	// … which runs a query for all attachements
 	function ssai_query( $atts ) {
-		$out = ''; //we start with empty output
 
 		/*
 		* here we handle the shortcode attributes
@@ -35,7 +34,7 @@ class SSAI_class {
 		// set default values
 		$atts = shortcode_atts(
 			array(
-				'size'    => 'medium',
+				'size'    => '',
 				'exclude' => '',
 				'columns' => 2
 				),
@@ -44,11 +43,33 @@ class SSAI_class {
 
 		$exclude = explode(",", $atts['exclude']);
 
-		/*
-		* here we fetch all attachments
-		* Need to exclude certain images?
-		* Shortcode attribute "exclude" handles that
-		*/
+		$all_attachments = $this->ssai_get_all_attachment_ids( $exclude );
+
+		// if we don't hava any attachment, we are done
+		if(!$all_attachments) return;
+
+		// loop attachments, assign their ID's to array
+		foreach( $all_attachments as $attachment )
+			$attachmentIDs[] = $attachment->ID;
+
+
+		// explode the array and append to our $atts
+		$atts['ids']     = implode( ',', $attachmentIDs );
+		$atts['columns'] = $atts['columns'];
+		$atts['size']    = $atts['size'];
+
+		// use the native wordpress gallery shortcode with our altered $atts
+		return gallery_shortcode( $atts );
+
+	}
+
+	/*
+	* here we fetch all attachments
+	* Need to exclude certain images?
+	* Shortcode attribute "exclude" handles that
+	*/
+	private function ssai_get_all_attachment_ids( $exclude ) {
+
 		$args = array(
 	    'post_type' => 'attachment',
 	    'numberposts' => -1,
@@ -56,60 +77,10 @@ class SSAI_class {
 	    'post_mime_type' => 'image',
 	    'post_status' => null,
 	    'post_parent' => null );
+
 		$all_attachments = get_posts( $args );
 
-		if( $all_attachments ) {
+		return $all_attachments;
 
-			if( current_theme_supports( 'html5' ) ) {
-				// start with output
-				$out .= '<div class="gallery gallery-columns-'.$atts['columns'].' gallery-size-'.$atts['size'].'">';
-
-				// Loop through all attachments and fetch the right image size
-		    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
-
-		    $out .= '<figure class="gallery-item">';
-		    $out .= '<div class="gallery-icon"';
-		    $out .= '<a href="'. site_url() .'/?attachment_id='. $attachment->ID.'">';
-				$out .= wp_get_attachment_image(
-					         $attachment->ID,
-					         $atts['size'], // attribute passed to the shortcode
-					         false,
-					         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
-					      );
-				$out .= '</a></div></figure>';
-
-
-				endforeach;
-				wp_reset_postdata();
-
-			} else {
-
-				$out .= '<div class="gallery gallery-columns-'.$atts['columns'].' gallery-size-'.$atts['size'].'">';
-
-				// Loop through all attachments and fetch the right image size
-		    foreach ( $all_attachments as $attachment ) : setup_postdata( $attachment );
-
-		    $out .= '<dl class="gallery-item">';
-		    $out .= '<dt class="gallery-icon">';
-		    $out .= '<a href="'. site_url() .'/?attachment_id='. $attachment->ID.'">';
-				$out .= wp_get_attachment_image(
-					         $attachment->ID,
-					         $atts['size'], // attribute passed to the shortcode
-					         false,
-					         array( 'alt'	=> trim( strip_tags( $attachment->post_excerpt ) ) )
-					      );
-				$out .= '</a></dt></dl>';
-
-				endforeach;
-				wp_reset_postdata();
-
-			}
-
-			$out .= '</div>';
-
-		} // if( $all_attachments )
-
-		return $out;
 	}
-
 }
