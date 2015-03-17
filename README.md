@@ -13,10 +13,12 @@ You may also exclude images (like a logo file that you also uploaded to the medi
 The images get displayed as gallery and use HTML5 tag `<figure>`, if your theme supports HTML5. By default, the plugin will show images in two columns, but you may set the columns with the attribute columns, e.g.
 `[ssai columns="3"]`
 
-It may not surprise you that you can combine the attributes, e.g.
-`[ssai size="thumbnail" exclude="7, 22, 32"]`
+Images in the gallery are linked to an attachment page by default. If you want to link them to the media-file instead, please use the attribute `link`: 
+`[ssai link="file"]`
 
-To style the List with images, the unsorted is wrapped in a `<div class="ssai">`.
+It may not surprise you that you can combine the attributes, e.g.
+`[ssai size="thumbnail" exclude="7, 22, 32" columns="3" link="file"]`
+
 
 ## German
 Dieses Plugin erzeugt einen Textbaustein `[ssai]`, den du in jedem Beitrag oder Seite deiner Website nutzen kannst. Der Textbaustein führt eine Funktion aus, die alle Attachments abruft und die zugehörigen Bilder in einer unsortierten Liste ausgibt.
@@ -31,7 +33,8 @@ Du kannst außerdem Bilder über ihre ID ausschließen (etwa eine Logo-Datei, di
 Bilder werden als Galerie angezeigt und verwenden das HTML5-Tag `<figure>`, wenn dein Theme HTML5 unterstützt. Per Voreinstellung zeigt das Plugin Bilder in zwei Spalten, aber du kannst die Spaltenzahl mit Hilfe des Attributs columns wählen, z.B.
 `[ssai columns="3"]`
 
-Es mag dich wenig überraschen, dass du die Attribute auch kombinieren kannst, z.B.:
-`[ssai size="thumbnail" exclude="7, 22, 32" columns="3"]`
+Die Bilder in der Gallerie sind laut Voreinstellung mit der zugehörigen Anhang-Seite verknüpft. Möchtest du statt dessen auf die Mediendatei verlinken, verwende bitte das Attribut `link`: 
+`[ssai link="file"]` 
 
-Damit du die Liste mit den Bildern in deinem Theme stylen kannst, wird die unsortierte Liste eingebettet in ein `<div class="ssai">`.
+Es mag dich wenig überraschen, dass du die Attribute auch kombinieren kannst, z.B.:
+`[ssai size="thumbnail" exclude="7, 22, 32" columns="3" link="file"]`

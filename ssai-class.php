@@ -36,7 +36,8 @@ class SSAI_class {
 			array(
 				'size'    => '',
 				'exclude' => '',
-				'columns' => 2
+				'columns' => 2,
+				'link'    => ''
 				),
 			$atts,
 			'ssai' );

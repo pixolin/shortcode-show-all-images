@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Shortcode Shows All Images
-Description: Creates a Shortcode to display all Images that have been uploaded
+Description: Creates a Shortcode to display all Images that have been uploaded to the media library. Shortcode can be e.g. [ssai size="thumbnail" exclude="7, 22, 32" columns="3" link="file"]. Please refer to the readme file provided with this plugin for details. No settings needed.
 Author: Bego Mario Garde
 Author URI: https://garde-medienberatung.de
-Version: 0.2.0
+Version: 0.2.1
 License: GPL2
 Text Domain: ssai
 Domain Path: /languages/
